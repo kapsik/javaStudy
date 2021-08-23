@@ -14,7 +14,6 @@ public class exceptionEx2_1{
 			System.out.println("pathSeperater : "+pathSeperater);
 			System.out.println("absolutePath : "+absolutePath);
 			System.out.println("fileName : "+fileName);
-			
 	}
 	
 	private static File createFile(String fName) {
