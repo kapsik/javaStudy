@@ -6,16 +6,20 @@ public class exceptionEx1{
 		try {
 			throw new Exception();
 		}catch(Exception e){
-			e.printStackTrace();
+			System.out.println("첫번째 예외");
 		}
 		//throw new Exception();
 		//throw new RuntimeException();
 		method1();
-		
+		System.out.println("프로그램 종료");
 	}
 	
-	public static void method1 ()throws Exception {
-		int a = 1/0;
-		System.out.println(a);
+	public static void method1 () {
+		try {
+			int a = 1/0;
+			System.out.println(a);
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+		}
 	}
 }
