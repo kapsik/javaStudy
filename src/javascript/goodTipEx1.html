@@ -5,6 +5,7 @@
 <title>Insert title here</title>
 <script type="text/javascript" src="./goodTip1.js"></script>
 <script type="text/javascript" src="./Resource/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
 </head>
 <body>
 <header>
@@ -30,7 +31,37 @@
 		<input type="text" id="txt2" placeholder="write here" onkeydown="fnOnkeyDown(this.id)">
 		<input type="button" id="btnEven" value="짝수만" onclick="printMessage('txt2')">
 		<input type="text" id="txtResult2">	
+	</div>
+	<div style="width: 25%">
+		<canvas id="myChart1"></canvas>
 	</div>	
+	<script type="text/javascript">
+		//차트엘리먼트 선택
+		var myChart1 = document.getElementById("myChart1").getContext('2d');
+		//차트객체생성과 동시에 초기화설정
+		var barCart = new Chart(myChart1, {
+			type : 'bar', //pie, line.doughnut, polarArea
+			data : {
+				//A> 라벨
+				labels : ['학원', '연구원', '출판사', '미디어사', '위니브'],
+				
+				//B> 데이터셋
+				datasets : [{
+					//1. 차트 데이터라벨
+					label : '바울랩 매출액',	
+					//2. 차트 데이터
+					data : [
+						10,
+						500,
+						100,
+						200,
+						2000
+					]
+				}]
+				
+			}
+		})
+	</script>
 </main>
 <footer>
 	<div></div>
