@@ -5,66 +5,236 @@
 <title>Insert title here</title>
 <script type="text/javascript" src="./goodTip1.js"></script>
 <script type="text/javascript" src="./Resource/jquery-3.6.0.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
+<script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
+<script type="text/javascript"src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
 </head>
 <body>
-<header>
-	<nav>
-		<div>1</div>
-		<div>2</div>
-		<div>3</div>
-		<div>4</div>
-	</nav>
-</header>
-<main>
-	<article>
-		<section></section>
-		<section></section>
-	</article>
-	<aside></aside>
-	<div>
-		<input type="text" id="txt1" placeholder="write here" onkeydown="fnOnkeyDown(this.id)">
-		<input type="button" id="btn1" value="push" onclick="printMessage('txt1')">
-		<input type="text" id="txtResult1">
-	</div>
-	<div>
-		<input type="text" id="txt2" placeholder="write here" onkeydown="fnOnkeyDown(this.id)">
-		<input type="button" id="btnEven" value="짝수만" onclick="printMessage('txt2')">
-		<input type="text" id="txtResult2">	
-	</div>
-	<div style="width: 25%">
-		<canvas id="myChart1"></canvas>
-	</div>	
-	<script type="text/javascript">
-		//차트엘리먼트 선택
-		var myChart1 = document.getElementById("myChart1").getContext('2d');
-		//차트객체생성과 동시에 초기화설정
-		var barCart = new Chart(myChart1, {
-			type : 'bar', //pie, line.doughnut, polarArea
-			data : {
-				//A> 라벨
-				labels : ['학원', '연구원', '출판사', '미디어사', '위니브'],
-				
-				//B> 데이터셋
-				datasets : [{
-					//1. 차트 데이터라벨
-					label : '바울랩 매출액',	
-					//2. 차트 데이터
-					data : [
-						10,
-						500,
-						100,
-						200,
-						2000
-					]
-				}]
-				
+	<header>
+		<nav>
+			<div>1</div>
+			<div>2</div>
+			<div>3</div>
+			<div>4</div>
+		</nav>
+	</header>
+	<main>
+		<article>
+			<section></section>
+			<section></section>
+		</article>
+		<aside></aside>
+		<div>
+			<input type="text" id="txt1" placeholder="write here"
+				onkeydown="fnOnkeyDown(this.id)"> <input type="button"
+				id="btn1" value="push" onclick="printMessage('txt1')"> <input
+				type="text" id="txtResult1">
+		</div>
+		<div>
+			<input type="text" id="txt2" placeholder="write here"
+				onkeydown="fnOnkeyDown(this.id)"> <input type="button"
+				id="btnEven" value="짝수만" onclick="printMessage('txt2')"> <input
+				type="text" id="txtResult2">
+		</div>
+		<!-- chart.js -->
+		<div style="width: 25%">
+			<input type="button" id="dsAdd" value="데이터추가" onclick="fnDsAdd()">
+			<canvas id="myChart1"></canvas>
+		</div>
+		
+		<!-- echart -->
+		<div style="width: 100%; border:1px solid black ">
+			<input type="button" id="btnEchartSearch" value="조회" onclick="fnMakeEchart();">
+		</div>
+		<div>
+			<div id="myEchart1" style="width: 600px; height: 400px;"></div>
+		</div>
+
+<script type="text/javascript">
+//html 로딩이 끝난후 스크립트 실행 하기위해 선언
+document.addEventListener("DOMContentLoaded",function(){
+	
+	//Echart 호출
+	fnMakeEchart();
+	
+});
+
+
+
+
+/* 
+Echart 생성
+*/
+function fnMakeEchart(){
+
+	//B> Echart
+	//1. dom 준비
+	var myEchart1 = echarts.init(document.getElementById("myEchart1"));
+
+	//2. 차트속성 준비
+	var option = {
+		//제목
+		title : {
+			text : "myEchart"
+		},
+		//아이템별 소개
+		legend: {
+			show: true	
+		},
+		//데이터 미리보기(마우스 올렸을때)
+		tooltip: {
+			//아이템별
+			trigger: 'item'
+		}
+		//x축
+		,xAxis : {
+			data : [ "a", "b", "c", "d", "e" ]
+		},
+		//y축
+		yAxis : [
+			//왼쪽
+			{
+				//데이터 (동적으로 넣어줄때 빈배열로 만들어야함)
+				data : []
+				,type: 'value'
+				,name:'1번'
+				//y축 레이블
+				,axisLabel: {
+					//형식
+					formatter: '{value} %'
+				}
+				//방향
+				,position: 'left'
+				//최소값
+				,min: 0
+				//최대값
+				,max: 100
+			},
+			//오른쪽
+			{
+				data : []
+				,type: 'value'
+				,name: '2번'
+				,axisLabel: {
+					formatter: '{value} 개'
+				}
+				,position: 'right'
 			}
-		})
-	</script>
-</main>
-<footer>
-	<div></div>
-</footer>
+		],
+		
+		//데이터
+		series : [
+			//왼쪽
+			{
+				//마우스 올려두었을때 tooltip에 나타날 이름 설정
+				name: "sales1"
+				//타입 설정
+				,type: "bar"
+				// 데이터 (동적 삽입시 빈배열로 생성)
+				,data:[]
+				//데이터가 들어갈 y축 인덱스
+				,yAxisIndex: 0
+			},
+			//오른쪽
+			{
+				name:"sales2"
+				,type:"line"
+				,data:[]
+				,yAxisIndex: 1
+			}
+		]
+		};
+	
+//(1) 차트를 생성 함수에서 데이터를 생성해주는 방법
+/* 		
+	//3.차트에 데이터 삽입
+		for(var i = 0;i < 10; i++){
+			//A
+			option.series[0].data.push(Math.round(Math.random()*100));
+			//B
+			option.series[1].data.push(Math.round(Math.random()*1000));
+		};
+		
+	//4.차트에 옵션 반영
+		myEchart1.setOption(option, true);
+	
+ */	
+ 
+ //(2) 차트를 생성하고 데이터 생성 함수를 호출해서 옵션에 넣어주는 방법
+	myEchart1.setOption(fnGetEchartData(option), true);
+};
+
+/* Echart 데이터 가져오기 */
+function fnGetEchartData(option){
+	for(var i = 0;i < 10; i++){
+		//A
+		option.series[0].data.push(Math.round(Math.random()*100));
+		//B
+		option.series[1].data.push(Math.round(Math.random()*1000));
+	};
+	return option;
+};
+
+
+
+
+
+
+
+
+
+function fnDsAdd() {
+	//1) 랜덤 변수생성
+	//A> 랜덤 유니코드=>문자
+	var randUni = Math.floor(Math.random() * (43 - 41 + 1)) + 41;
+	var nextCha = String.fromCharCode(parseInt(randUni, 16))
+	//B> 랜덤숫자
+	var randNum = Math.floor(Math.random() * 100);
+	
+	console.log("nextCha : " + nextCha);
+	console.log("randNum : " + randNum);
+	//2) 맵생성
+	graphMap.set(nextCha, randNum);
+	console.log("graphMap.size : " + graphMap.size);
+	
+	//4) 차트 업데이트
+	barChart.update();
+};
+
+
+//A> chart.js	
+var graphMap = new Map();
+//초기화
+graphMap.clear();
+//초기세팅
+graphMap.set("A", 10);
+graphMap.set("B", 20);
+graphMap.set("C", 30);
+
+//차트엘리먼트 선택
+var myChart1 = document.getElementById("myChart1").getContext('2d');
+//차트객체생성과 동시에 초기화설정
+var barChart = new Chart(myChart1, {
+	type : 'bar', //pie, line.doughnut, polarArea
+	data : {
+		//A> 라벨
+		labels : [ 'A', 'B', 'C' ],
+
+		//B> 데이터셋
+		datasets : [ {
+			//1. 차트 데이터라벨
+			label : '바울랩 매출액',
+			//2. 차트 데이터
+			data : [ graphMap.get("A"), graphMap.get("B"),
+					graphMap.get("C"), ]
+		} ]
+
+	}
+});
+
+</script>
+	</main>
+	<footer>
+		<div></div>
+	</footer>
 </body>
 </html>
